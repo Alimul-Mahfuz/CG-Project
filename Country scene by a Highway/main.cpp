@@ -1,3 +1,13 @@
+/*  Project Name: Country Scene by a Highway.
+    Group No: 07.
+    Group Members:
+    1) Alimul Mahfuz Tushar (19-39831-1)
+    2) Abdul Wazed (19-39806-1)
+*/
+//Press n: For Night;
+//Press d: For Day;
+
+
 #include <iostream>
 #include <GL/gl.h>
 #include <GL/glut.h>
@@ -11,10 +21,18 @@
 GLfloat position = 0.0f;
 GLfloat speed = 0.1f;
 
+GLfloat position1 = 0.0f;
+GLfloat speed1 = 0.02f;
+
+
+float sr=1.0, sg=1.0, sb=0.0;
+float skyr=0.0, skyg=0.5, skyb=1.0;
+float skyr1=0.0, skyg1=0.5, skyb1=1.0;
+
 
 void update(int value) {
 
-    if(position > 1.0)
+    if(position > 1.3)
         position = -1.2f;
 
     position += speed;
@@ -24,12 +42,26 @@ void update(int value) {
 
 	glutTimerFunc(100, update, 0);
 }
+
+void update1(int value) {
+
+    if(position1 > 1.3)
+        position1 = -1.0f;
+
+    position1 += speed1;
+
+	glutPostRedisplay();
+
+
+	glutTimerFunc(100, update1, 0);
+}
 void init() {
    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
    glMatrixMode(GL_PROJECTION);
    glLoadIdentity();
-   gluOrtho2D(0, 0, 0, 0);
+   gluOrtho2D(-1.0, 1.0, -1.0, 1.0);
    glMatrixMode(GL_MODELVIEW);
+
 }
 
 void handleMouse(int button, int state, int x, int y) {
@@ -44,8 +76,6 @@ void handleMouse(int button, int state, int x, int y) {
 
 	glutPostRedisplay();
 }
-
-
 void handleKeypress(unsigned char key, int x, int y) {
 
 	switch (key) {
@@ -56,49 +86,142 @@ case 'a':
 case 'w':
     speed = 0.1f;
     break;
-
-
 glutPostRedisplay();
 
+case 'n':
+    skyr=0.0;
+    skyg=0.0;
+    skyb=0.2;
 
+    skyr1=1.0;
+    skyg1=1.0;
+    skyb1=1.0;
+
+    sr=1.0;
+    sg=1.0;
+    sb=1.0;
+
+    break;
+glutPostRedisplay();
+
+case 'N':
+    skyr=0.0;
+    skyg=0.0;
+    skyb=0.2;
+
+    skyr1=1.0;
+    skyg1=1.0;
+    skyb1=1.0;
+
+    sr=1.0;
+    sg=1.0;
+    sb=1.0;
+    break;
+glutPostRedisplay();
+
+case 'd':
+    skyr=0.0;
+    skyg=0.5;
+    skyb=1.0;
+
+    skyr1=0.0;
+    skyg1=0.5;
+    skyb1=1.0;
+
+    sr=1.0;
+    sg=1.0;
+    sb=0.0;
+    break;
+glutPostRedisplay();
+
+case 'D':
+    skyr=0.0;
+    skyg=0.5;
+    skyb=1.0;
+
+    skyr1=0.0;
+    skyg1=0.5;
+    skyb1=1.0;
+
+    sr=1.0;
+    sg=1.0;
+    sb=0.0;
+    break;
+glutPostRedisplay();
 	}
 }
 
 
-/*void wheel(int x, int y)
-{
-    float t;
-
-    glBegin(GL_LINE_LOOP);
-    for(int i=0.0f;i<360.0f;i++)
-    {
-        t=i*3.142/180;
-        glVertex2f(x+0.03*cos(t),y+0.03*sin(t));
-    }
-    glEnd();
-}*/
-
 void car(){
 
-    glBegin(GL_LINE_LOOP);
-    //glColor3f(1.0f, 0.0f, 0.0f);
+    glBegin(GL_QUADS);
+    glColor3f(0.0f, 0.0f, 1.f);
     glVertex2f(-0.5f, -0.5f);
     glVertex2f(-0.5f, -0.44f);
-    glVertex2f(-0.2f, -0.44f);
-    glVertex2f(-0.2f, -0.5f);
+    glVertex2f(-0.22f, -0.44f);
+    glVertex2f(-0.22f, -0.5f);
     glEnd();
 
-    glBegin(GL_LINE_LOOP);
+    glBegin(GL_QUADS);
+    glColor3f(1.0f, 1.0f, 0.0f);
     glVertex2f(-0.5f, -0.44f);
-    glVertex2f(-0.45f, -0.4f);
-    glVertex2f(-0.3f, -0.4f);
+    glVertex2f(-0.45f, -0.39f);
+    glVertex2f(-0.3f, -0.39f);
     glVertex2f(-0.25f, -0.44f);
     glEnd();
 
-    //wheel(-0.4, -0.5);
-    //wheel(-0.27, -0.5);
-
 }
+//==========================================================
+
+void circle()
+{
+    glBegin(GL_POLYGON);
+	for(int i=0;i<200;i++)
+        {
+
+            float pi=3.1416;
+            float A=(i*2*pi)/200;
+            float r=0.02;
+            float x = r * cos(A);
+            float y = r * sin(A);
+            glVertex2f(x,y );
+        }
+	glEnd();
+}
+
+void circle1()
+{
+    glBegin(GL_POLYGON);
+	for(int i=0;i<200;i++)
+        {
+
+            float pi=3.1416;
+            float A=(i*2*pi)/200;
+            float r=0.003;
+            float x = r * cos(A);
+            float y = r * sin(A);
+            glVertex2f(x,y );
+        }
+	glEnd();
+}
+
+//===========================================================
+
+void wheel()
+{
+    glPushMatrix();
+    glColor3f(1.0f, 0.0f, 0.0f);
+    glTranslatef(-0.45f, -0.5f, 0.0f);
+    circle();
+	glPopMatrix();
+
+	glPushMatrix();
+    glColor3f(1.0f, 0.0f, 0.0f);
+    glTranslatef(-0.29f, -0.5f, 0.0f);
+    circle();
+	glPopMatrix();
+}
+
 
 
 void tree()
@@ -230,7 +353,7 @@ void display() {
 //================================================
 //Sky Code
 glBegin(GL_QUADS);
-    glColor3f(0.0f, 0.5f, 1.0f);
+    glColor3f(skyr, skyg, skyb);
     glVertex2f(-1.0f, 1.0f);
     glVertex2f(1.0f, 1.0f);
     glVertex2f(1.0f, 0.6f);
@@ -238,7 +361,204 @@ glBegin(GL_QUADS);
 glEnd();
 //==================================================
 
+//====================================================
+//SUN CODE
+glPushMatrix();
+    glColor3f(sr, sg, sb);
+    glTranslatef(-0.25f, 0.9f, 0.0f);
+    glBegin(GL_POLYGON);
+        for(int i=0;i<200;i++)
+            {
 
+                float pi=3.1416;
+                float A=(i*2*pi)/200;
+                float r=0.07;
+                float x = r * cos(A);
+                float y = r * sin(A);
+                glVertex2f(x,y );
+            }
+	glEnd();
+glPopMatrix();
+
+glPushMatrix();
+    glColor3f(skyr1, skyg1, skyb1);
+    glTranslatef(-0.8f, 0.8f, 0.0f);
+    circle1();
+glPopMatrix();
+
+glPushMatrix();
+    glColor3f(skyr1, skyg1, skyb1);
+    glTranslatef(-0.9f, 0.84f, 0.0f);
+    circle1();
+glPopMatrix();
+
+glPushMatrix();
+    glColor3f(skyr1, skyg1, skyb1);
+    glTranslatef(-0.97f, 0.74f, 0.0f);
+    circle1();
+glPopMatrix();
+
+glPushMatrix();
+    glColor3f(skyr1, skyg1, skyb1);
+    glTranslatef(-0.6f, 0.93f, 0.0f);
+    circle1();
+glPopMatrix();
+
+glPushMatrix();
+    glColor3f(skyr1, skyg1, skyb1);
+    glTranslatef(-0.69f, 0.86f, 0.0f);
+    circle1();
+glPopMatrix();
+
+glPushMatrix();
+    glColor3f(skyr1, skyg1, skyb1);
+    glTranslatef(-0.73f, 0.98f, 0.0f);
+    circle1();
+glPopMatrix();
+
+glPushMatrix();
+    glColor3f(skyr1, skyg1, skyb1);
+    glTranslatef(-0.66f, 0.8f, 0.0f);
+    circle1();
+glPopMatrix();
+
+glPushMatrix();
+    glColor3f(skyr1, skyg1, skyb1);
+    glTranslatef(-0.55f, 0.71f, 0.0f);
+    circle1();
+glPopMatrix();
+
+glPushMatrix();
+    glColor3f(skyr1, skyg1, skyb1);
+    glTranslatef(-0.4f, 0.9f, 0.0f);
+    circle1();
+glPopMatrix();
+
+glPushMatrix();
+    glColor3f(skyr1, skyg1, skyb1);
+    glTranslatef(-0.45f, 0.85f, 0.0f);
+    circle1();
+glPopMatrix();
+
+glPushMatrix();
+    glColor3f(skyr1, skyg1, skyb1);
+    glTranslatef(-0.3f, 0.75f, 0.0f);
+    circle1();
+glPopMatrix();
+
+glPushMatrix();
+    glColor3f(skyr1, skyg1, skyb1);
+    glTranslatef(-0.2f, 0.77f, 0.0f);
+    circle1();
+glPopMatrix();
+
+glPushMatrix();
+    glColor3f(skyr1, skyg1, skyb1);
+    glTranslatef(-0.17f, 0.668f, 0.0f);
+    circle1();
+glPopMatrix();
+
+glPushMatrix();
+    glColor3f(skyr1, skyg1, skyb1);
+    glTranslatef(-0.1f, 0.9f, 0.0f);
+    circle1();
+glPopMatrix();
+
+glPushMatrix();
+    glColor3f(skyr1, skyg1, skyb1);
+    glTranslatef(0.0f, 0.64f, 0.0f);
+    circle1();
+glPopMatrix();
+
+glPushMatrix();
+    glColor3f(skyr1, skyg1, skyb1);
+    glTranslatef(0.8f, 0.8f, 0.0f);
+    circle1();
+glPopMatrix();
+
+glPushMatrix();
+    glColor3f(skyr1, skyg1, skyb1);
+    glTranslatef(0.9f, 0.84f, 0.0f);
+    circle1();
+glPopMatrix();
+
+glPushMatrix();
+    glColor3f(skyr1, skyg1, skyb1);
+    glTranslatef(0.97f, 0.74f, 0.0f);
+    circle1();
+glPopMatrix();
+
+glPushMatrix();
+    glColor3f(skyr1, skyg1, skyb1);
+    glTranslatef(0.6f, 0.93f, 0.0f);
+    circle1();
+glPopMatrix();
+
+glPushMatrix();
+    glColor3f(skyr1, skyg1, skyb1);
+    glTranslatef(0.69f, 0.86f, 0.0f);
+    circle1();
+glPopMatrix();
+
+glPushMatrix();
+    glColor3f(skyr1, skyg1, skyb1);
+    glTranslatef(0.73f, 0.98f, 0.0f);
+    circle1();
+glPopMatrix();
+
+glPushMatrix();
+    glColor3f(skyr1, skyg1, skyb1);
+    glTranslatef(0.66f, 0.8f, 0.0f);
+    circle1();
+glPopMatrix();
+
+glPushMatrix();
+    glColor3f(skyr1, skyg1, skyb1);
+    glTranslatef(0.55f, 0.71f, 0.0f);
+    circle1();
+glPopMatrix();
+
+glPushMatrix();
+    glColor3f(skyr1, skyg1, skyb1);
+    glTranslatef(0.4f, 0.9f, 0.0f);
+    circle1();
+glPopMatrix();
+
+glPushMatrix();
+    glColor3f(skyr1, skyg1, skyb1);
+    glTranslatef(0.45f, 0.85f, 0.0f);
+    circle1();
+glPopMatrix();
+
+glPushMatrix();
+    glColor3f(skyr1, skyg1, skyb1);
+    glTranslatef(0.3f, 0.75f, 0.0f);
+    circle1();
+glPopMatrix();
+
+glPushMatrix();
+    glColor3f(skyr1, skyg1, skyb1);
+    glTranslatef(0.2f, 0.63f, 0.0f);
+    circle1();
+glPopMatrix();
+
+glPushMatrix();
+    glColor3f(skyr1, skyg1, skyb1);
+    glTranslatef(0.2f, 0.75f, 0.0f);
+    circle1();
+glPopMatrix();
+
+glPushMatrix();
+    glColor3f(skyr1, skyg1, skyb1);
+    glTranslatef(0.1f, 0.9f, 0.0f);
+    circle1();
+glPopMatrix();
+
+glPushMatrix();
+    glColor3f(skyr1, skyg1, skyb1);
+    glTranslatef(0.8f, 0.629f, 0.0f);
+    circle1();
+glPopMatrix();
 
 //==================================================
 //Left side
@@ -387,16 +707,6 @@ glBegin(GL_QUADS);
     glVertex2f(0.25f, 0.0f);
     glVertex2f(0.1f, 0.0f);
 glEnd();
-
-/*
-//House to Road Code
-glBegin(GL_QUADS);
-    glColor3f(0.0f, 0.0f, 0.0f);
-    glVertex2f(0.22f, 0.0f);
-    glVertex2f(0.13f, 0.0f);
-    glVertex2f(0.13f, -0.1f);
-    glVertex2f(0.22f, -0.1f);
-glEnd();*/
 
 
 //School Window 1 Top Floor
@@ -604,7 +914,7 @@ glEnd();
 
 //=====================================================
 glPushMatrix();
-glTranslatef(position,0.0f, 0.0f);
+glTranslatef(position1,0.0f, 0.0f);
 
 //B0AT CODE
 glBegin(GL_QUADS);
@@ -631,7 +941,12 @@ glEnd();
 
 
     glPopMatrix();
-    //car();
+
+    glPushMatrix();
+glTranslatef(position,0.0f, 0.0f);
+    car();
+    wheel();
+    glPopMatrix();
     tree();
     glutSwapBuffers();
     glFlush();
@@ -640,18 +955,24 @@ glEnd();
 
 
 
+
+
 int main(int argc, char** argv) {
+
+   printf("\n\n******************Country Scene by a Highway****************\n\n");
+   printf("Press n: For Night\n\n");
+   printf("Press d: For Day\n\n");
    glutInit(&argc, argv);
    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
    glutInitWindowSize(1000, 600);
    glutInitWindowPosition(50, 50);
-   glutCreateWindow("Basic Animation");
+   glutCreateWindow("Country Scene by a Highway");
    glutDisplayFunc(display);
    init();
    glutKeyboardFunc(handleKeypress);
    glutMouseFunc(handleMouse);
-   glutTimerFunc(25, update, 0);
+   glutTimerFunc(100, update, 0);
+   glutTimerFunc(100, update1, 0);
    glutMainLoop();
    return 0;
-
 }
