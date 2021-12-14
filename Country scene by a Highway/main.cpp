@@ -24,10 +24,20 @@ GLfloat speed = 0.1f;
 GLfloat position1 = 0.0f;
 GLfloat speed1 = 0.02f;
 
+GLfloat position2 = 0.0f;
+GLfloat speed2 = 0.01f;
+
+GLfloat position3 = 0.0f;
+GLfloat speed3 = 0.009f;
+
+//float _rain = 0.0;
+//bool rainday = false;
 
 float sr=1.0, sg=1.0, sb=0.0;
 float skyr=0.0, skyg=0.5, skyb=1.0;
 float skyr1=0.0, skyg1=0.5, skyb1=1.0;
+
+char text[] = "School";
 
 
 void update(int value) {
@@ -55,6 +65,47 @@ void update1(int value) {
 
 	glutTimerFunc(100, update1, 0);
 }
+void update2(int value) {
+
+    if(position2 > 0.0)
+        position2 = -1.0f;
+
+    position2 += speed2;
+
+	glutPostRedisplay();
+
+
+	glutTimerFunc(100, update2, 0);
+}
+
+void update3(int value) {
+
+    if(position3 > 1.7)
+        position3 = -1.1f;
+
+    position3 += speed3;
+
+	glutPostRedisplay();
+
+
+	glutTimerFunc(100, update3, 0);
+}
+
+void Sprint( float x, float y, char *st)
+{
+    int l,i;
+
+
+    l=strlen( st ); // see how many characters are in text string.
+    glColor3f(0.0f,0.0f,0.0f);
+    //glDisable(GL_LIGHTING);
+    glRasterPos2f( x, y); // location to start printing text
+    for( i=0; i < l; i++) // loop until i is greater then l
+    {
+       glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, st[i]);
+
+    }
+}
 void init() {
    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
    glMatrixMode(GL_PROJECTION);
@@ -64,6 +115,34 @@ void init() {
 
 }
 
+void rain()
+{
+
+    int i=0,j=0;
+    float x,y;
+    x=-1.0f;
+    y=1.0f;
+
+    while(j<=100)
+    {
+        x = -1.0f;
+        while(i<=100)
+        {
+            glBegin(GL_LINES);
+            glColor3f(1.0f, 1.0f,1.0f);
+            glVertex2f(x,y);
+            glVertex2f(x-0.02f,y-0.07f);
+            glEnd();
+
+            x=x+0.03f;
+            i++;
+        }
+        y = y-0.10f;
+        j++;
+        i=0;
+    }
+
+}
 void handleMouse(int button, int state, int x, int y) {
 	if (button == GLUT_LEFT_BUTTON)
 	{
@@ -148,6 +227,19 @@ case 'D':
     sb=0.0;
     break;
 glutPostRedisplay();
+
+	case 'r':
+	    glPushMatrix();
+    glTranslatef(position2,0.0f, 0.0f);
+    rain();
+    glPopMatrix();
+        //rainday = true;
+        //sndPlaySound("River.wav",SND_ASYNC|SND_LOOP);
+        //sndPlaySound("River.wav",SND_MEMORY|SND_ASYNC);
+        break;
+
+
+        glutPostRedisplay();
 	}
 }
 
@@ -205,6 +297,24 @@ void circle1()
 	glEnd();
 }
 
+void circle2()
+{
+    glBegin(GL_POLYGON);
+	for(int i=0;i<200;i++)
+        {
+
+            float pi=3.1416;
+            float A=(i*2*pi)/200;
+            float r=0.03;
+            float x = r * cos(A);
+            float y = r * sin(A);
+            glVertex2f(x,y );
+        }
+	glEnd();
+}
+
+
+
 //===========================================================
 
 void wheel()
@@ -222,7 +332,89 @@ void wheel()
 	glPopMatrix();
 }
 
+void flag()
+{
+    glPushMatrix();
+    glColor3f(1.0f, 0.0f, 0.0f);
+    glTranslatef(0.73f, 0.235f, 0.0f);
+    circle2();
+	glPopMatrix();
+}
+//======================================================
 
+void cloud()
+{
+    glPushMatrix();
+    glColor3f(1.0f, 1.0f, 1.0f);
+    glTranslatef(-0.9f, 0.89f, 0.0f);
+    glBegin(GL_POLYGON);
+        for(int i=0;i<200;i++)
+            {
+
+                float pi=3.1416;
+                float A=(i*2*pi)/200;
+                float r=0.07;
+                float x = r * cos(A);
+                float y = r * sin(A);
+                glVertex2f(x,y );
+            }
+	glEnd();
+glPopMatrix();
+
+    glPushMatrix();
+    glColor3f(1.0f, 1.0f, 1.0f);
+    glTranslatef(-0.82f, 0.87f, 0.0f);
+    glBegin(GL_POLYGON);
+        for(int i=0;i<200;i++)
+            {
+
+                float pi=3.1416;
+                float A=(i*2*pi)/200;
+                float r=0.07;
+                float x = r * cos(A);
+                float y = r * sin(A);
+                glVertex2f(x,y );
+            }
+	glEnd();
+glPopMatrix();
+
+    glPushMatrix();
+    glColor3f(1.0f, 1.0f, 1.0f);
+    glTranslatef(-0.88f, 0.81f, 0.0f);
+    glBegin(GL_POLYGON);
+        for(int i=0;i<200;i++)
+            {
+
+                float pi=3.1416;
+                float A=(i*2*pi)/200;
+                float r=0.07;
+                float x = r * cos(A);
+                float y = r * sin(A);
+                glVertex2f(x,y );
+            }
+	glEnd();
+glPopMatrix();
+
+    glPushMatrix();
+    glColor3f(1.0f, 1.0f, 1.0f);
+    glTranslatef(-0.8f, 0.79f, 0.0f);
+    glBegin(GL_POLYGON);
+        for(int i=0;i<200;i++)
+            {
+
+                float pi=3.1416;
+                float A=(i*2*pi)/200;
+                float r=0.07;
+                float x = r * cos(A);
+                float y = r * sin(A);
+                glVertex2f(x,y );
+            }
+	glEnd();
+glPopMatrix();
+}
+
+
+//=========================================================
 
 void tree()
 {
@@ -349,7 +541,6 @@ void display() {
     glClearColor(0.0f, 0.7f, 0.0f, 0.0f);
     glClear(GL_COLOR_BUFFER_BIT);
     glLoadIdentity();
-
 //================================================
 //Sky Code
 glBegin(GL_QUADS);
@@ -379,6 +570,7 @@ glPushMatrix();
             }
 	glEnd();
 glPopMatrix();
+
 
 glPushMatrix();
     glColor3f(skyr1, skyg1, skyb1);
@@ -681,6 +873,22 @@ glBegin(GL_QUADS);
     glVertex2f(-0.2f, 0.4f);
 glEnd();
 
+//School Text
+glBegin(GL_QUADS);
+    glColor3f(1.0f, 1.0f, 1.0f);
+    glVertex2f(0.1f, 0.49f);
+    glVertex2f(0.3f, 0.49f);
+    glVertex2f(0.3f, 0.4f);
+    glVertex2f(0.1f, 0.4f);
+glEnd();
+
+glPushMatrix();
+glTranslatef(0.27f, 0.42f, 0.0f);
+Sprint(-0.12f, 0.0f, text);
+glPopMatrix();
+//End of Text
+
+
 //School Right Side
 glBegin(GL_QUADS);
     glColor3f(0.8f, 1.0f, 0.5f);
@@ -840,7 +1048,22 @@ glBegin(GL_QUADS);
 glEnd();
 //=======================================================
 
+//Flag Code
+glBegin(GL_QUADS);
+    glColor3f(1.0f, 1.0f, 1.0f);
+    glVertex2f(0.66f, 0.31f);
+    glVertex2f(0.67f, 0.31f);
+    glVertex2f(0.67f, 0.0f);
+    glVertex2f(0.66f, 0.0f);
+glEnd();
 
+glBegin(GL_QUADS);
+    glColor3f(0.0f, 0.2f, 0.0f);
+    glVertex2f(0.67f, 0.3f);
+    glVertex2f(0.8f, 0.3f);
+    glVertex2f(0.8f, 0.17f);
+    glVertex2f(0.67f, 0.17f);
+glEnd();
 
 //=======================================================
 //HOUSE CODE
@@ -947,7 +1170,20 @@ glTranslatef(position,0.0f, 0.0f);
     car();
     wheel();
     glPopMatrix();
+
+    glPushMatrix();
+glTranslatef(position2,0.0f, 0.0f);
+    //rain();
+    glPopMatrix();
+
+    glPushMatrix();
+glTranslatef(position3,0.0f, 0.0f);
+    cloud();
+    glPopMatrix();
+
+    flag();
     tree();
+
     glutSwapBuffers();
     glFlush();
 }
@@ -973,6 +1209,8 @@ int main(int argc, char** argv) {
    glutMouseFunc(handleMouse);
    glutTimerFunc(100, update, 0);
    glutTimerFunc(100, update1, 0);
+   glutTimerFunc(100, update2, 0);
+   glutTimerFunc(100, update3, 0);
    glutMainLoop();
    return 0;
 }
