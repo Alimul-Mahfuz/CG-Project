@@ -4,8 +4,6 @@
     1) Alimul Mahfuz Tushar (19-39831-1)
     2) Abdul Wazed (19-39806-1)
 */
-//Press n: For Night;
-//Press d: For Day;
 
 
 #include <iostream>
@@ -22,22 +20,29 @@ GLfloat position = 0.0f;
 GLfloat speed = 0.1f;
 
 GLfloat position1 = 0.0f;
-GLfloat speed1 = 0.02f;
+GLfloat speed1 = 0.01f;
 
 GLfloat position2 = 0.0f;
 GLfloat speed2 = 0.01f;
 
 GLfloat position3 = 0.0f;
-GLfloat speed3 = 0.009f;
+GLfloat speed3 = 0.006f;
 
-//float _rain = 0.0;
-//bool rainday = false;
+GLfloat position4 = 0.0f;
+GLfloat speed4 = 0.1f;
+
+
+bool rainday = false;
+GLfloat positionRain = 0.0f;
+GLfloat speedRain = 0.03f;
 
 float sr=1.0, sg=1.0, sb=0.0;
 float skyr=0.0, skyg=0.5, skyb=1.0;
 float skyr1=0.0, skyg1=0.5, skyb1=1.0;
 
 char text[] = "School";
+
+//==============================Update=====================================
 
 
 void update(int value) {
@@ -91,6 +96,24 @@ void update3(int value) {
 	glutTimerFunc(100, update3, 0);
 }
 
+void update4(int value) {
+
+    if(position4 > 1.6)
+        position4 = -1.0f;
+
+    position4 += speed4;
+
+	glutPostRedisplay();
+
+
+	glutTimerFunc(100, update4, 0);
+}
+//=================================================================================
+
+
+//====================================School Name==================================
+
+
 void Sprint( float x, float y, char *st)
 {
     int l,i;
@@ -106,6 +129,10 @@ void Sprint( float x, float y, char *st)
 
     }
 }
+
+//====================================================================================
+
+
 void init() {
    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
    glMatrixMode(GL_PROJECTION);
@@ -115,55 +142,116 @@ void init() {
 
 }
 
-void rain()
-{
 
-    int i=0,j=0;
-    float x,y;
-    x=-1.0f;
-    y=1.0f;
+//==================================Rain============================================
+void Rain(){
 
-    while(j<=100)
-    {
-        x = -1.0f;
-        while(i<=100)
-        {
-            glBegin(GL_LINES);
-            glColor3f(1.0f, 1.0f,1.0f);
-            glVertex2f(x,y);
-            glVertex2f(x-0.02f,y-0.07f);
-            glEnd();
+  glPushMatrix();
+  glTranslatef(0.0f, -positionRain, 0.0f);
+    if(rainday){
+  glPushMatrix();
+  glTranslatef(0.0, 0.5f, 0.0f);
 
-            x=x+0.03f;
-            i++;
-        }
-        y = y-0.10f;
-        j++;
-        i=0;
+    GLfloat xR= -1.0f;
+    GLfloat yR = 1.0f;
+
+    glBegin(GL_LINES);
+    glColor3f(1.0f, 1.0f,1.0f);
+    for(int i=0;i<=100;i++){
+
+    glVertex2f(xR,yR);
+    glVertex2f(xR-0.02f,yR-0.07f);
+
+    xR += .03f;
     }
+    glEnd();
 
+    for(int j=0;j<=100;j++)
+    {
+    xR = -1.0f;
+    yR= yR-0.10f;
+    glBegin(GL_LINES);
+    glColor3f(1.0f, 1.0f, 1.0f);
+    for(int i=0;i<=250;i++){
+
+    glVertex2f(xR,yR);
+    glVertex2f(xR-.02f,yR-.07f);
+
+    xR += .03f;
+    }
+    glEnd();
+    }
+  glPopMatrix();
+    }
+  glPopMatrix();
 }
+void updateRain(int value) {
+    if(positionRain >.14)
+        {positionRain = 0.0f;}
+
+    positionRain += speedRain;
+
+	glutPostRedisplay();
+
+	glutTimerFunc(100, updateRain, 0);
+}
+
+//========================================================================================
+
+
+//================================Handel Mouse============================================
+
+
 void handleMouse(int button, int state, int x, int y) {
 	if (button == GLUT_LEFT_BUTTON)
 	{
 		if (state == GLUT_DOWN)
 		{
 			speed += 0.1f;
+			speed1 += 0.01f;
+            speed3 += 0.006f;
+            speed4 += 0.1f;
 			printf("clicked at (%d, %d)\n", x, y);
 		}
 	}
 
 	glutPostRedisplay();
 }
+
+//======================================================================
+
+
+//==================================Morning, Night Sound============================
+void morningSound()
+{
+    sndPlaySound("morning.wav",SND_ASYNC|SND_LOOP);
+}
+void nightSound()
+{
+    sndPlaySound("night.wav",SND_ASYNC|SND_LOOP);
+}
+
+//=============================================================================
+
+
+//===========================Handle KeyPress=====================================
+
+
 void handleKeypress(unsigned char key, int x, int y) {
 
 	switch (key) {
 
 case 'a':
     speed = 0.0f;
+    speed1= 0.0f;
+    speed3= 0.0f;
+    speed4= 0.0f;
     break;
 case 'w':
     speed = 0.1f;
+    speed1= 0.01f;
+    speed3= 0.006f;
+    speed4= 0.1f;
     break;
 glutPostRedisplay();
 
@@ -179,7 +267,6 @@ case 'n':
     sr=1.0;
     sg=1.0;
     sb=1.0;
-
     break;
 glutPostRedisplay();
 
@@ -228,20 +315,40 @@ case 'D':
     break;
 glutPostRedisplay();
 
-	case 'r':
-	    glPushMatrix();
-    glTranslatef(position2,0.0f, 0.0f);
-    rain();
-    glPopMatrix();
-        //rainday = true;
-        //sndPlaySound("River.wav",SND_ASYNC|SND_LOOP);
-        //sndPlaySound("River.wav",SND_MEMORY|SND_ASYNC);
+case '1':
+    morningSound();
+    break;
+glutPostRedisplay();
+
+case '2':
+    nightSound();
+    break;
+glutPostRedisplay();
+
+case '3':
+    sndPlaySound(NULL,SND_ASYNC);
+    break;
+glutPostRedisplay();
+
+
+
+case 'r':
+        rainday = true;
+        sndPlaySound("rain.wav",SND_ASYNC|SND_LOOP);
+        //sndPlaySound("rain.wav",SND_MEMORY|SND_ASYNC);
         break;
+    case 't':
+        rainday = false;
+        sndPlaySound(NULL,SND_ASYNC);
+        break;
+glutPostRedisplay();
 
-
-        glutPostRedisplay();
 	}
 }
+//======================================================================================
+
+
+//===========================================Car & Bus==================================
 
 
 void car(){
@@ -263,7 +370,70 @@ void car(){
     glEnd();
 
 }
-//==========================================================
+
+void bus()
+{
+    glBegin(GL_POLYGON);
+    glColor3f(1.0f, 0.0f, 0.0f);
+    glVertex2f(0.63f, -0.15f);
+    glVertex2f(0.8f, -0.15f);
+    glVertex2f(0.8f, -0.29f);
+    glVertex2f(0.6f, -0.29f);
+    glVertex2f(0.6f, -0.22f);
+    glEnd();
+
+    glBegin(GL_TRIANGLES);
+    glColor3f(0.0f, 0.5f, 1.0f);
+    glVertex2f(0.6f, -0.22f);
+    glVertex2f(0.63f, -0.15);
+    glVertex2f(0.63f, -0.22f);
+    glEnd();
+
+    glBegin(GL_QUADS);
+    glColor3f(0.0f, 0.5f, 1.0f);
+    glVertex2f(0.64f, -0.17f);
+    glVertex2f(0.67f, -0.17);
+    glVertex2f(0.67f, -0.235f);
+    glVertex2f(0.64f, -0.235f);
+    glEnd();
+
+    glBegin(GL_QUADS);
+    glColor3f(1.0f, 1.0f, 1.0f);
+    glVertex2f(0.66f, -0.17f);
+    glVertex2f(0.68f, -0.17);
+    glVertex2f(0.68f, -0.255f);
+    glVertex2f(0.66f, -0.255f);
+    glEnd();
+
+    glBegin(GL_QUADS);
+    glColor3f(0.0f, 0.5f, 1.0f);
+    glVertex2f(0.685f, -0.17f);
+    glVertex2f(0.715f, -0.17);
+    glVertex2f(0.715f, -0.22f);
+    glVertex2f(0.685f, -0.22f);
+    glEnd();
+
+    glBegin(GL_QUADS);
+    glColor3f(0.0f, 0.5f, 1.0f);
+    glVertex2f(0.718f, -0.17f);
+    glVertex2f(0.75f, -0.17);
+    glVertex2f(0.75f, -0.22f);
+    glVertex2f(0.718f, -0.22f);
+    glEnd();
+
+    glBegin(GL_QUADS);
+    glColor3f(0.0f, 0.5f, 1.0f);
+    glVertex2f(0.752f, -0.17f);
+    glVertex2f(0.795f, -0.17);
+    glVertex2f(0.795f, -0.22f);
+    glVertex2f(0.752f, -0.22f);
+    glEnd();
+}
+//================================================================
+
+
+//=================================Circle==========================
+
 
 void circle()
 {
@@ -313,9 +483,27 @@ void circle2()
 	glEnd();
 }
 
+void circle3()
+{
+    glBegin(GL_POLYGON);
+	for(int i=0;i<200;i++)
+        {
+
+            float pi=3.1416;
+            float A=(i*2*pi)/200;
+            float r=0.01;
+            float x = r * cos(A);
+            float y = r * sin(A);
+            glVertex2f(x,y );
+        }
+	glEnd();
+}
+
+//=================================================================
 
 
-//===========================================================
+//=========================Bus & Car Wheel==================================
+
 
 void wheel()
 {
@@ -332,6 +520,26 @@ void wheel()
 	glPopMatrix();
 }
 
+void busWheel()
+{
+    glPushMatrix();
+    glColor3f(0.8f, 0.8f, 0.8f);
+    glTranslatef(0.65f, -0.29f, 0.0f);
+    circle();
+	glPopMatrix();
+
+
+	glPushMatrix();
+    glColor3f(0.8f, 0.8f, 0.8f);
+    glTranslatef(0.75f, -0.29f, 0.0f);
+    circle();
+	glPopMatrix();
+}
+
+//===============================================================================
+
+
+//===================================Flag Circle====================================
 void flag()
 {
     glPushMatrix();
@@ -340,7 +548,12 @@ void flag()
     circle2();
 	glPopMatrix();
 }
-//======================================================
+
+//===============================================================================
+
+
+//=================================Cloud=========================================
+
 
 void cloud()
 {
@@ -413,12 +626,14 @@ glPopMatrix();
 glPopMatrix();
 }
 
+//====================================================================
 
-//=========================================================
+
+//=========================Tree Code===================================
+
 
 void tree()
 {
-    //=======================================================
 //Tree Code
 //Left Side Tree
 glBegin(GL_QUADS);
@@ -537,12 +752,17 @@ glBegin(GL_TRIANGLES);
 glEnd();
 }
 
+//==============================================================
+
+
+//==============================Display=========================
 void display() {
     glClearColor(0.0f, 0.7f, 0.0f, 0.0f);
     glClear(GL_COLOR_BUFFER_BIT);
     glLoadIdentity();
-//================================================
-//Sky Code
+
+//===================Sky Code=============================
+
 glBegin(GL_QUADS);
     glColor3f(skyr, skyg, skyb);
     glVertex2f(-1.0f, 1.0f);
@@ -550,10 +770,11 @@ glBegin(GL_QUADS);
     glVertex2f(1.0f, 0.6f);
     glVertex2f(-1.0f, 0.6f);
 glEnd();
+
 //==================================================
 
-//====================================================
-//SUN CODE
+//=====================SUN CODE===============================
+
 glPushMatrix();
     glColor3f(sr, sg, sb);
     glTranslatef(-0.25f, 0.9f, 0.0f);
@@ -571,6 +792,7 @@ glPushMatrix();
 	glEnd();
 glPopMatrix();
 
+//===========================Star Code=================================
 
 glPushMatrix();
     glColor3f(skyr1, skyg1, skyb1);
@@ -752,7 +974,9 @@ glPushMatrix();
     circle1();
 glPopMatrix();
 
-//==================================================
+//=========================================================
+
+//================================Hill Code================
 //Left side
 //HILL CODE 1
 glBegin(GL_TRIANGLES);
@@ -805,10 +1029,8 @@ glBegin(GL_TRIANGLES);
 glEnd();
 //=============================================
 
+//=====================ROAD CODE========================
 
-
-//=============================================
-//ROAD CODE
 glBegin(GL_QUADS);
     glColor3f(0.0f, 0.0f, 0.0f);
     glVertex2f(-1.0f, -0.1f);
@@ -816,6 +1038,170 @@ glBegin(GL_QUADS);
     glVertex2f(1.0f, -0.6f);
     glVertex2f(-1.0f, -0.6f);
 glEnd();
+
+//********************
+glBegin(GL_QUADS);
+    glColor3f(1.0f, 1.0f, 1.0f);
+    glVertex2f(-1.0f, -0.1f);
+    glVertex2f(-0.9f, -0.1f);
+    glVertex2f(-0.9f, -0.12f);
+    glVertex2f(-1.0f, -0.12f);
+glEnd();
+
+glBegin(GL_QUADS);
+    glColor3f(0.4f, 0.4f, 0.4f);
+    glVertex2f(-0.9f, -0.1f);
+    glVertex2f(-0.7f, -0.1f);
+    glVertex2f(-0.7f, -0.12f);
+    glVertex2f(-0.9f, -0.12f);
+glEnd();
+
+glBegin(GL_QUADS);
+    glColor3f(1.0f, 1.0f, 1.0f);
+    glVertex2f(-0.7f, -0.1f);
+    glVertex2f(-0.5f, -0.1f);
+    glVertex2f(-0.5f, -0.12f);
+    glVertex2f(-0.7f, -0.12f);
+glEnd();
+
+glBegin(GL_QUADS);
+    glColor3f(0.4f, 0.4f, 0.4f);
+    glVertex2f(-0.5f, -0.1f);
+    glVertex2f(-0.2f, -0.1f);
+    glVertex2f(-0.2f, -0.12f);
+    glVertex2f(-0.5f, -0.12f);
+glEnd();
+
+glBegin(GL_QUADS);
+    glColor3f(1.0f, 1.0f, 1.0f);
+    glVertex2f(-0.2f, -0.1f);
+    glVertex2f(0.0f, -0.1f);
+    glVertex2f(0.0f, -0.12f);
+    glVertex2f(-0.2f, -0.12f);
+glEnd();
+
+glBegin(GL_QUADS);
+    glColor3f(0.4f, 0.4f, 0.4f);
+    glVertex2f(0.0f, -0.1f);
+    glVertex2f(0.2f, -0.1f);
+    glVertex2f(0.2f, -0.12f);
+    glVertex2f(0.0f, -0.12f);
+glEnd();
+
+glBegin(GL_QUADS);
+    glColor3f(1.0f, 1.0f, 1.0f);
+    glVertex2f(0.2f, -0.1f);
+    glVertex2f(0.45f, -0.1f);
+    glVertex2f(0.45f, -0.12f);
+    glVertex2f(0.2f, -0.12f);
+glEnd();
+
+glBegin(GL_QUADS);
+    glColor3f(0.4f, 0.4f, 0.4f);
+    glVertex2f(0.45f, -0.1f);
+    glVertex2f(0.7f, -0.1f);
+    glVertex2f(0.7f, -0.12f);
+    glVertex2f(0.45f, -0.12f);
+glEnd();
+
+glBegin(GL_QUADS);
+    glColor3f(1.0f, 1.0f, 1.0f);
+    glVertex2f(0.7f, -0.1f);
+    glVertex2f(0.88f, -0.1f);
+    glVertex2f(0.88f, -0.12f);
+    glVertex2f(0.7f, -0.12f);
+glEnd();
+
+glBegin(GL_QUADS);
+    glColor3f(0.4f, 0.4f, 0.4f);
+    glVertex2f(0.88f, -0.1f);
+    glVertex2f(1.0f, -0.1f);
+    glVertex2f(1.0f, -0.12f);
+    glVertex2f(0.88f, -0.12f);
+glEnd();
+//********************************
+
+//********************
+glBegin(GL_QUADS);
+    glColor3f(1.0f, 1.0f, 1.0f);
+    glVertex2f(-1.0f, -0.6f);
+    glVertex2f(-0.9f, -0.6f);
+    glVertex2f(-0.9f, -0.58f);
+    glVertex2f(-1.0f, -0.58f);
+glEnd();
+
+glBegin(GL_QUADS);
+    glColor3f(0.4f, 0.4f, 0.4f);
+    glVertex2f(-0.9f, -0.6f);
+    glVertex2f(-0.7f, -0.6f);
+    glVertex2f(-0.7f, -0.58f);
+    glVertex2f(-0.9f, -0.58f);
+glEnd();
+
+glBegin(GL_QUADS);
+    glColor3f(1.0f, 1.0f, 1.0f);
+    glVertex2f(-0.7f, -0.6f);
+    glVertex2f(-0.5f, -0.6f);
+    glVertex2f(-0.5f, -0.58f);
+    glVertex2f(-0.7f, -0.58f);
+glEnd();
+
+glBegin(GL_QUADS);
+    glColor3f(0.4f, 0.4f, 0.4f);
+    glVertex2f(-0.5f, -0.6f);
+    glVertex2f(-0.2f, -0.6f);
+    glVertex2f(-0.2f, -0.58f);
+    glVertex2f(-0.5f, -0.58f);
+glEnd();
+
+glBegin(GL_QUADS);
+    glColor3f(1.0f, 1.0f, 1.0f);
+    glVertex2f(-0.2f, -0.6f);
+    glVertex2f(0.0f, -0.6f);
+    glVertex2f(0.0f, -0.58f);
+    glVertex2f(-0.2f, -0.58f);
+glEnd();
+
+glBegin(GL_QUADS);
+    glColor3f(0.4f, 0.4f, 0.4f);
+    glVertex2f(0.0f, -0.6f);
+    glVertex2f(0.2f, -0.6f);
+    glVertex2f(0.2f, -0.58f);
+    glVertex2f(0.0f, -0.58f);
+glEnd();
+
+glBegin(GL_QUADS);
+    glColor3f(1.0f, 1.0f, 1.0f);
+    glVertex2f(0.2f, -0.6f);
+    glVertex2f(0.45f, -0.6f);
+    glVertex2f(0.45f, -0.58f);
+    glVertex2f(0.2f, -0.58f);
+glEnd();
+
+glBegin(GL_QUADS);
+    glColor3f(0.4f, 0.4f, 0.4f);
+    glVertex2f(0.45f, -0.6f);
+    glVertex2f(0.7f, -0.6f);
+    glVertex2f(0.7f, -0.58f);
+    glVertex2f(0.45f, -0.58f);
+glEnd();
+
+glBegin(GL_QUADS);
+    glColor3f(1.0f, 1.0f, 1.0f);
+    glVertex2f(0.7f, -0.6f);
+    glVertex2f(0.88f, -0.6f);
+    glVertex2f(0.88f, -0.58f);
+    glVertex2f(0.7f, -0.58f);
+glEnd();
+
+glBegin(GL_QUADS);
+    glColor3f(0.4f, 0.4f, 0.4f);
+    glVertex2f(0.88f, -0.6f);
+    glVertex2f(1.0f, -0.6f);
+    glVertex2f(1.0f, -0.58f);
+    glVertex2f(0.88f, -0.58f);
+glEnd();
+//********************************
 
 //Road white color right side
 glBegin(GL_QUADS);
@@ -847,10 +1233,8 @@ glBegin(GL_QUADS);
 glEnd();
 //================================================
 
+//===================RIVER CODE=============================
 
-
-//================================================
-//RIVER CODE
 glBegin(GL_QUADS);
     glColor3f(0.6f, 1.0f, 1.0f);
     glVertex2f(-1.0f, -0.6f);
@@ -860,10 +1244,7 @@ glBegin(GL_QUADS);
 glEnd();
 //================================================
 
-
-
-//================================================
-//SCHOOL CODE
+//=====================SCHOOL CODE===========================
 //School Roof
 glBegin(GL_QUADS);
     glColor3f(0.9f, 1.0f, 0.0f);
@@ -1066,7 +1447,9 @@ glBegin(GL_QUADS);
 glEnd();
 
 //=======================================================
-//HOUSE CODE
+
+//==========================HOUSE CODE====================
+
 glBegin(GL_QUADS);
     glColor3f(0.3f, 0.4f, 0.5f);
     glVertex2f(-0.7f, 0.4f);
@@ -1091,8 +1474,6 @@ glBegin(GL_QUADS);
     glVertex2f(-0.63f, 0.2f);
     glVertex2f(-0.67f, 0.2f);
 glEnd();
-
-
 
 
 glBegin(GL_QUADS);
@@ -1132,14 +1513,10 @@ glEnd();
 //=========================================
 
 
-
-
-
-//=====================================================
+//=====================B0AT CODE================================
 glPushMatrix();
 glTranslatef(position1,0.0f, 0.0f);
 
-//B0AT CODE
 glBegin(GL_QUADS);
     glColor3f(0.9f, 0.8f, 0.5f);
     glVertex2f(-0.8f, -0.8f);
@@ -1162,24 +1539,29 @@ glBegin(GL_TRIANGLES);
     glVertex2f(-0.7f, -0.8f);
 glEnd();
 
+    glPopMatrix();
 
+//============================================
+
+    glPushMatrix();
+        glTranslatef(position,0.0f, 0.0f);
+        car();
+        wheel();
+    glPopMatrix();
+
+    Rain();
+
+    glPushMatrix();
+        glTranslatef(position3,0.0f, 0.0f);
+        cloud();
     glPopMatrix();
 
     glPushMatrix();
-glTranslatef(position,0.0f, 0.0f);
-    car();
-    wheel();
+        glTranslatef(-position4,0.0f, 0.0f);
+        bus();
+        busWheel();
     glPopMatrix();
 
-    glPushMatrix();
-glTranslatef(position2,0.0f, 0.0f);
-    //rain();
-    glPopMatrix();
-
-    glPushMatrix();
-glTranslatef(position3,0.0f, 0.0f);
-    cloud();
-    glPopMatrix();
 
     flag();
     tree();
@@ -1190,14 +1572,16 @@ glTranslatef(position3,0.0f, 0.0f);
 //=================================================================
 
 
-
-
-
 int main(int argc, char** argv) {
 
    printf("\n\n******************Country Scene by a Highway****************\n\n");
-   printf("Press n: For Night\n\n");
-   printf("Press d: For Day\n\n");
+   printf("Press N/n: For Night\n\n");
+   printf("Press D/d: For Day\n\n");
+   printf("Press r: For Rain\n\n");
+   printf("Press t: For Rain Stop\n\n");
+   printf("Press 1: For Morning Sound\n\n");
+   printf("Press 2: For Night Sound\n\n");
+   printf("Press 3: For Sound Stop\n\n");
    glutInit(&argc, argv);
    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
    glutInitWindowSize(1000, 600);
@@ -1211,6 +1595,8 @@ int main(int argc, char** argv) {
    glutTimerFunc(100, update1, 0);
    glutTimerFunc(100, update2, 0);
    glutTimerFunc(100, update3, 0);
+   glutTimerFunc(100, update4, 0);
+   glutTimerFunc(100, updateRain, 0);
    glutMainLoop();
    return 0;
 }
