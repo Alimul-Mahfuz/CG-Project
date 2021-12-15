@@ -9,6 +9,7 @@ The objective of the project is to implement the knowledge that we have from the
 Significant of the project:
 This project represents the daily scenario of a village side highway. This project can be of great importance if it is used in the right place and in the right way. It can be used as a simulation for a highway planning. It can also be used to demonstrate the planning for rural area. Besides, this scenery can be used as template for animation and game making. 
 Screenshot of the System:
+![image_2021_12_12T16_24_40_632Z](https://user-images.githubusercontent.com/74812296/146118801-8212edea-5707-4577-bbaf-bc7eff5a3054.png)
 
 
  
