@@ -11,17 +11,27 @@ This project represents the daily scenario of a village side highway. This proje
 Screenshot of the System:
 
 Figure1: Night mode rain
+
 ![image_2021_12_12T16_24_40_632Z](https://user-images.githubusercontent.com/74812296/146118801-8212edea-5707-4577-bbaf-bc7eff5a3054.png)
 
 
  
 Figure 2: Day mode rain
 
+![image_2021_12_12T16_21_56_353Z](https://user-images.githubusercontent.com/74812296/146119098-6ffffc8b-55af-4cac-8684-9fa09623fabd.png)
+
+
  
 Figure 3: Night mode
 
+![image_2021_12_12T16_13_00_817Z](https://user-images.githubusercontent.com/74812296/146119131-14d8d27e-5633-44ef-ad8b-b6ecf2120e14.png)
+
+
  
 Figure 4: Day mode
+
+![image_2021_12_12T16_11_31_779Z](https://user-images.githubusercontent.com/74812296/146119177-d037ac23-a664-43d1-bc49-fc27247ad30c.png)
+
 
 
 Conclusion:
