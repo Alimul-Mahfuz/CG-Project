@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1639505984 source:c:\users\alimul\onedrive\documents\github\cg-project\country scene by a highway\main.cpp
+1639537948 source:c:\users\alimul\onedrive\documents\github\cg-project\country scene by a highway\main.cpp
 	<iostream>
 	<GL/gl.h>
 	<GL/glut.h>
