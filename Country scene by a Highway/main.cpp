@@ -3,6 +3,8 @@
     Group Members:
     1) Alimul Mahfuz Tushar (19-39831-1)
     2) Abdul Wazed (19-39806-1)
+    3) Ehsanuzzaman Shawon (19-39823-1)
+    4)
 */
 
 
@@ -23,7 +25,7 @@ GLfloat position1 = 0.0f;
 GLfloat speed1 = 0.01f;
 
 GLfloat position2 = 0.0f;
-GLfloat speed2 = 0.01f;
+GLfloat speed2 = 0.1f;
 
 GLfloat position3 = 0.0f;
 GLfloat speed3 = 0.006f;
@@ -72,7 +74,7 @@ void update1(int value) {
 }
 void update2(int value) {
 
-    if(position2 > 0.0)
+    if(position2 > 1.6)
         position2 = -1.0f;
 
     position2 += speed2;
@@ -244,12 +246,14 @@ void handleKeypress(unsigned char key, int x, int y) {
 case 'a':
     speed = 0.0f;
     speed1= 0.0f;
+    speed2= 0.0f;
     speed3= 0.0f;
     speed4= 0.0f;
     break;
 case 'w':
     speed = 0.1f;
     speed1= 0.01f;
+    speed2= 0.1f;
     speed3= 0.006f;
     speed4= 0.1f;
     break;
@@ -347,6 +351,75 @@ glutPostRedisplay();
 }
 //======================================================================================
 
+//==========================================Plane=========================================
+
+void plane()
+{
+    glBegin(GL_QUADS);
+    glColor3f(0.0f, 0.4f, 0.0f);
+        glVertex2f(0.65f, 0.9f);
+        glVertex2f(0.87f, 0.9f);
+        glVertex2f(0.9f, 0.85f);
+        glVertex2f(0.6f, 0.85f);
+    glEnd();
+
+    glBegin(GL_QUADS);
+    glColor3f(1.0f, 0.0f, 0.0f);
+        glVertex2f(0.87f, 0.9f);
+        glVertex2f(0.93f, 0.94f);
+        glVertex2f(0.95f, 0.96f);
+        glVertex2f(0.9f, 0.85f);
+    glEnd();
+
+    glBegin(GL_QUADS);
+    glColor3f(1.0f, 0.0f, 0.0f);
+        glVertex2f(0.74f, 0.9f);
+        glVertex2f(0.76f, 0.96f);
+        glVertex2f(0.79f, 0.98f);
+        glVertex2f(0.78f, 0.9f);
+    glEnd();
+
+    glBegin(GL_QUADS);
+    glColor3f(1.0f, 0.0f, 0.0f);
+        glVertex2f(0.74f, 0.85f);
+        glVertex2f(0.76f, 0.78f);
+        glVertex2f(0.79f, 0.76f);
+        glVertex2f(0.78f, 0.85f);
+    glEnd();
+
+    glBegin(GL_QUADS);
+    glColor3f(0.0f, 0.0f, 1.0f);
+        glVertex2f(0.65f, 0.885f);
+        glVertex2f(0.68f, 0.885f);
+        glVertex2f(0.68f, 0.868f);
+        glVertex2f(0.65f, 0.868f);
+    glEnd();
+
+    glBegin(GL_QUADS);
+    glColor3f(0.0f, 0.0f, 1.0f);
+        glVertex2f(0.7f, 0.885f);
+        glVertex2f(0.73f, 0.885f);
+        glVertex2f(0.73f, 0.868f);
+        glVertex2f(0.7f, 0.868f);
+    glEnd();
+
+    glBegin(GL_QUADS);
+    glColor3f(0.0f, 0.0f, 1.0f);
+        glVertex2f(0.75f, 0.885f);
+        glVertex2f(0.78f, 0.885f);
+        glVertex2f(0.78f, 0.868f);
+        glVertex2f(0.75f, 0.868f);
+    glEnd();
+
+
+    glBegin(GL_QUADS);
+    glColor3f(0.0f, 0.0f, 1.0f);
+        glVertex2f(0.8f, 0.885f);
+        glVertex2f(0.83f, 0.885f);
+        glVertex2f(0.83f, 0.868f);
+        glVertex2f(0.8f, 0.868f);
+    glEnd();
+}
 
 //===========================================Car & Bus==================================
 
@@ -1562,6 +1635,10 @@ glEnd();
         busWheel();
     glPopMatrix();
 
+    glPushMatrix();
+        glTranslatef(-position2,0.0f, 0.0f);
+        plane();
+    glPopMatrix();
 
     flag();
     tree();
